@@ -6,9 +6,9 @@ from app_coder.views import curso, cursos, entregables, estudiante, inicio, prof
 
 urlpatterns = [
     path('agregacurso/<nombre>/<camada>', curso),
-    path('cursos/', cursos),
-    path('estudiantes/', estudiante),
-    path('entregables/',entregables),
-    path('profesor/',profesores),
-    path('', inicio),
+    path('cursos/', cursos, name ="Cursos"),
+    path('estudiantes/', estudiante, name = "Estudiantes"),
+    path('entregables/',entregables, name = "Entregables"),
+    path('profesores/',profesores, name = "Profesores"),
+    path('', inicio, name = "Inicio"),
 ]
