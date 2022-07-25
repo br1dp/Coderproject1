@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+
 from app_coder.models import Curso
 
 # Create your views here.
@@ -39,3 +40,20 @@ def cursos (self):
 def entregables (self):
 
     return render(self,"entregables.html")
+
+
+def cursoformulario(request):
+
+    print("method:",request.method)
+    print("request:",request.POST)
+
+    if request.method == "POST":
+
+        curso = Curso(nombre = request.POST["Cursos"],camada = request.POST["Camada"])
+
+        curso.save()
+
+   
+        return render(request,"inicio.html")
+        
+    return render(request,"cursoformulario.html")
