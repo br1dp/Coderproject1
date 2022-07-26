@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from app_coder.forms import CursoFormulario
 
 
 from app_coder.models import Curso
@@ -42,6 +43,22 @@ def entregables (self):
     return render(self,"entregables.html")
 
 
+# def cursoformulario(request):
+
+#     print("method:",request.method)
+#     print("request:",request.POST)
+
+#     if request.method == "POST":
+
+#         curso = Curso(nombre = request.POST["Cursos"],camada = request.POST["Camada"])
+
+#         curso.save()
+
+   
+#         return render(request,"inicio.html")
+        
+#     return render(request,"cursoformulario.html")
+
 def cursoformulario(request):
 
     print("method:",request.method)
@@ -49,11 +66,20 @@ def cursoformulario(request):
 
     if request.method == "POST":
 
-        curso = Curso(nombre = request.POST["Cursos"],camada = request.POST["Camada"])
+        miFormulario = CursoFormulario(request.POST)
+
+        if miFormulario.is_valid():
+
+            data = miFormulario.cleaned_data
+
+        curso = Curso(nombre = data["curso"],camada = data["camada"])
 
         curso.save()
 
    
         return render(request,"inicio.html")
-        
-    return render(request,"cursoformulario.html")
+    else:
+        miFormulario = CursoFormulario()
+
+    return render(request,"cursoformulario.html",{"miFormulario":miFormulario})
+
