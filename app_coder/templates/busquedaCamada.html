@@ -1,0 +1,17 @@
+{% extends 'padre.html' %}
+
+{% load static %}
+
+
+{% block bloquecambia  %}
+
+    <form action="{% url 'Buscar' %}" method="GET"> {% csrf_token %}
+
+        <p>Numero de camada: <input type="text" name="camada"></p>
+
+        <input type="submit" value="Enviar">
+
+    </form>
+
+    
+{% endblock bloquecambia  %}
