@@ -8,9 +8,11 @@
 <p>Estamos buscando el numero de la camada: {{camada}} </p>
 
 {% if cursos %}
+
 <ul>
     
     {% for curso in cursos  %}
+    
         <li>{{curso.nombre}} - {{curso.camada}}</li>
         
     {% endfor %}

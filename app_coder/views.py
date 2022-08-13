@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+
+from .forms import ProfesorFormulario
+from .models import Profesor
 from app_coder.forms import CursoFormulario
 
 
@@ -103,3 +106,86 @@ def buscar(request):
         respuesta = "No enviaste datos"
 
     return HttpResponse(respuesta)
+
+def listaprofesores(request):
+
+    profesores = Profesor.objects.all()
+
+    context = {"profesores":profesores}
+
+    return render (request,"leerProfesores.html",context)
+
+def crearprofesores(request):
+
+    print("method:",request.method)
+    print("request:",request.POST)
+
+    if request.method == "POST":
+
+        miFormulario = ProfesorFormulario(request.POST)
+
+        if miFormulario.is_valid():
+
+            data = miFormulario.cleaned_data
+
+        profesor = Profesor(nombre = data["nombre"],apellido = data["apellido"],email = data["email"],profesion = data["profesion"])
+
+        profesor.save()
+
+   
+        return render(request,"inicio.html")
+    else:
+        miFormulario = ProfesorFormulario()
+
+    return render(request,"profesorformulario.html",{"miFormulario":miFormulario})
+
+
+def eliminarprofesor(request,id):
+
+    if request.method == "POST":
+
+        profesor = Profesor.objects.get(id = id)
+
+        profesor.delete()
+
+        profesores = Profesor.objects.all()
+
+        context = {"profesores":profesores}
+
+        return render (request,"leerProfesores.html",context)
+
+def editarprofesor(request,id):
+
+    print("method:",request.method)
+    print("request:",request.POST)
+
+    profesor = Profesor.objects.get(id = id)
+
+    if request.method == "POST":
+
+        miFormulario = ProfesorFormulario(request.POST)
+
+        if miFormulario.is_valid():
+
+            data = miFormulario.cleaned_data
+
+        profesor.nombre = data['nombre']
+        profesor.apellido = data['apellido']
+        profesor.email = data['email']
+        profesor.profesion = data['profesion']
+
+        profesor.save()
+
+   
+        return render(request,"inicio.html")
+
+    else:
+
+        miFormulario = ProfesorFormulario(initial={
+            'nombre': profesor.nombre,
+            'apellido': profesor.apellido,
+            'email': profesor.email,
+            'profesion': profesor.profesion,
+        })
+
+    return render(request,"editarProfesor.html",{"miFormulario":miFormulario,'id':profesor.id})
