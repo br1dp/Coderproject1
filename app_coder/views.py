@@ -1,11 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.views.generic import ListView,DeleteView,CreateView,UpdateView,DetailView
 from .forms import ProfesorFormulario
 from .models import Profesor
 from app_coder.forms import CursoFormulario
-
-
 from app_coder.models import Curso
 
 # Create your views here.
@@ -189,3 +187,47 @@ def editarprofesor(request,id):
         })
 
     return render(request,"editarProfesor.html",{"miFormulario":miFormulario,'id':profesor.id})
+
+class CursoList(ListView):
+
+    model = Curso
+
+    template_name = "curso_list.html"
+    context_object_name = "cursos"
+
+class CursoDetail(DetailView):
+
+    model = Curso
+
+    template_name = "curso_detail.html"
+
+    context_object_name =  "curso"
+
+
+
+class CursoCreate(CreateView):
+
+    model = Curso
+
+    template_name = "curso_create.html"
+
+    fields = ['nombre','camada']
+
+    success_url = '/app_coder/'
+
+class CursoUpdate(UpdateView):
+
+    model = Curso
+
+    template_name = "curso_update.html"
+
+    fields = ('__all__')
+
+    success_url = '/app_coder/'
+class CursoDelete(DeleteView):
+
+    model = Curso
+
+    template_name = "curso_delete.html"
+
+    success_url = '/app_coder/'
